@@ -1,21 +1,12 @@
 package com.turing.flea.view;
 
-import com.turing.flea.entity.Goods;
-import com.turing.flea.entity.User;
-import com.turing.flea.service.FriendService;
-import com.turing.flea.service.GoodsService;
-import com.turing.flea.common.Session;
-
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
-import com.turing.flea.common.GoodsStatus;
-
 
 /**
  * 个人中心界面
@@ -24,7 +15,7 @@ import com.turing.flea.common.GoodsStatus;
  *   个人信息修改: 更新 user 表          密码修改: 校验原密码后更新
  *   我的商品管理: 下架 / 删除 / 修改     我的商品条目: 点击进入商品详情
  *
- * 负责人: 云
+ * 负责人: 待分配
  */
 public class ProfileView extends JFrame {
 
@@ -78,118 +69,7 @@ public class ProfileView extends JFrame {
      * 参数: 无
      * 返回值: 无
      */
-    public void initView() {// 1. 顶部：个人信息区
-        nicknameLabel = new JLabel("昵称");
-        accountLabel = new JLabel("账号");
-        contactLabel = new JLabel("联系方式");
-        JPanel infoPanel = new JPanel(new GridLayout(3, 1, 5, 5));
-        infoPanel.setBorder(BorderFactory.createTitledBorder("我的信息"));
-        infoPanel.add(nicknameLabel);
-        infoPanel.add(accountLabel);
-        infoPanel.add(contactLabel);
-
-        String[] columns = {"商品ID", "标题", "价格(元)", "状态"};
-        goodsTableModel = new DefaultTableModel(columns, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        myGoodsTable = new JTable(goodsTableModel);
-        JScrollPane goodsScroll = new JScrollPane(myGoodsTable);
-        goodsScroll.setBorder(BorderFactory.createTitledBorder("我的商品"));
-
-        offShelfButton = new JButton("下架");
-        deleteButton = new JButton("删除");
-        editButton = new JButton("修改");
-        JPanel goodsBtnPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        goodsBtnPanel.add(offShelfButton);
-        goodsBtnPanel.add(deleteButton);
-        goodsBtnPanel.add(editButton);
-
-        friendListModel = new DefaultListModel<>();
-        friendList = new JList<>(friendListModel);
-        JScrollPane friendScroll = new JScrollPane(friendList);
-        friendScroll.setBorder(BorderFactory.createTitledBorder("好友列表"));
-
-        editInfoButton = new JButton("修改信息");
-        changePasswordButton = new JButton("修改密码");
-        addFriendButton = new JButton("添加好友");
-        myMessageButton = new JButton("我的留言");
-        JPanel functionPanel = new JPanel(new GridLayout(1, 4, 10, 5));
-        functionPanel.add(editInfoButton);
-        functionPanel.add(changePasswordButton);
-        functionPanel.add(addFriendButton);
-        functionPanel.add(myMessageButton);
-
-        JPanel leftPanel = new JPanel(new BorderLayout());
-        leftPanel.add(infoPanel, BorderLayout.NORTH);
-        leftPanel.add(friendScroll, BorderLayout.CENTER);
-
-        JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.add(goodsScroll, BorderLayout.CENTER);
-        rightPanel.add(goodsBtnPanel, BorderLayout.NORTH);
-        rightPanel.add(functionPanel, BorderLayout.SOUTH);
-
-        setLayout(new BorderLayout(10, 10));
-        add(leftPanel, BorderLayout.WEST);
-        add(rightPanel, BorderLayout.CENTER);
-
-        offShelfButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOffShelfClick();
-            }
-        });
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onDeleteClick();
-            }
-        });
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEditClick();
-            }
-        });
-        editInfoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onEditInfoClick();
-            }
-        });
-        changePasswordButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onChangePasswordClick();
-            }
-        });
-        addFriendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onAddFriendClick();
-            }
-        });
-        myMessageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onMyMessageClick();
-            }
-        });
-        myGoodsTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    onGoodsRowClick();
-                }
-            }
-        });
-
-        loadUserInfo();
-        loadMyGoods();
-        loadFriends();
-
+    public void initView() {
         // TODO 待实现 (负责人: 待分配)
     }
 
@@ -201,13 +81,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void loadUserInfo() {
-        User user = Session.getCurrentUser();
-        if (user == null) {
-            return;
-        }
-        nicknameLabel.setText("昵称：" + user.getNickname());
-        accountLabel.setText("账号：" + user.getAccount());
-        contactLabel.setText("联系方式：" + user.getContact());
+        throw new UnsupportedOperationException("待实现: ProfileView.loadUserInfo 负责人: 待分配");
     }
 
     /**
@@ -219,31 +93,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void loadMyGoods() {
-        GoodsService service = new GoodsService();
-        List<Goods> list = service.myGoods(Session.currentUserId());
-
-        goodsTableModel.setRowCount(0);
-        for (int i = 0; i < list.size(); i++) {
-            Goods g = list.get(i);
-            goodsTableModel.addRow(new Object[]{
-                    g.getId(),
-                    g.getTitle(),
-                    g.getPrice(),
-                    statusToText(g.getStatus())
-            });
-        }
-    }
-    private String statusToText(GoodsStatus status) {
-        if (status == GoodsStatus.SALE) {
-            return "在售";
-        } else if (status == GoodsStatus.SOLD) {
-            return "已售出";
-        } else if (status == GoodsStatus.OFF) {
-            return "已下架";
-        } else if (status == GoodsStatus.DRAFT) {
-            return "待处理";
-        }
-        return "未知";
+        throw new UnsupportedOperationException("待实现: ProfileView.loadMyGoods 负责人: 待分配");
     }
 
     /**
@@ -255,14 +105,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void loadFriends() {
-        FriendService service = new FriendService();
-        List<User> list = service.listFriends(Session.currentUserId());
-
-        friendListModel.clear();
-        for (int i = 0; i < list.size(); i++) {
-            User f = list.get(i);
-            friendListModel.addElement(f.getNickname() + "(" + f.getAccount() + ")");
-        }
+        throw new UnsupportedOperationException("待实现: ProfileView.loadFriends 负责人: 待分配");
     }
 
     /**
@@ -272,13 +115,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void onGoodsRowClick() {
-        int row = myGoodsTable.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "请先选择一件商品");
-            return;
-        }
-        int goodsId = Integer.parseInt(myGoodsTable.getValueAt(row, 0).toString());
-        new GoodsDetailView(goodsId).setVisible(true);
+        throw new UnsupportedOperationException("待实现: ProfileView.onGoodsRowClick 负责人: 待分配");
     }
 
     /**
@@ -291,27 +128,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void onOffShelfClick() {
-        int row = myGoodsTable.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "请先选择一件商品");
-            return;
-        }
-        int goodsId = Integer.parseInt(myGoodsTable.getValueAt(row, 0).toString());
-
-        int confirm = JOptionPane.showConfirmDialog(
-                this, "确定下架该商品吗?", "下架确认", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        GoodsService service = new GoodsService();
-        boolean success = service.offShelf(goodsId);
-        if (success) {
-            JOptionPane.showMessageDialog(this, "下架成功");
-            loadMyGoods();
-        } else {
-            JOptionPane.showMessageDialog(this, "下架失败");
-        }
+        throw new UnsupportedOperationException("待实现: ProfileView.onOffShelfClick 负责人: 待分配");
     }
 
     /**
@@ -324,27 +141,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void onDeleteClick() {
-        int row = myGoodsTable.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "请先选择一件商品");
-            return;
-        }
-        int goodsId = Integer.parseInt(myGoodsTable.getValueAt(row, 0).toString());
-
-        int confirm = JOptionPane.showConfirmDialog(
-                this, "确定删除该商品吗? 删除后不可恢复", "删除确认", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        GoodsService service = new GoodsService();
-        boolean success = service.delete(goodsId);
-        if (success) {
-            JOptionPane.showMessageDialog(this, "删除成功");
-            loadMyGoods();
-        } else {
-            JOptionPane.showMessageDialog(this, "该商品有未完成的交易，不能删除");
-        }
+        throw new UnsupportedOperationException("待实现: ProfileView.onDeleteClick 负责人: 待分配");
     }
 
     /**
@@ -354,13 +151,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void onEditClick() {
-        int row = myGoodsTable.getSelectedRow();
-        if (row < 0) {
-            JOptionPane.showMessageDialog(this, "请先选择一件商品");
-            return;
-        }
-        int goodsId = Integer.parseInt(myGoodsTable.getValueAt(row, 0).toString());
-        new EditGoodsView(goodsId).setVisible(true);
+        throw new UnsupportedOperationException("待实现: ProfileView.onEditClick 负责人: 待分配");
     }
 
     /**
@@ -370,8 +161,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void onEditInfoClick() {
-        new EditProfileDialog(this).setVisible(true); // 模态对话框，关闭后继续
-        loadUserInfo();
+        throw new UnsupportedOperationException("待实现: ProfileView.onEditInfoClick 负责人: 待分配");
     }
 
     /**
@@ -381,7 +171,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void onChangePasswordClick() {
-        new ChangePasswordDialog(this).setVisible(true);
+        throw new UnsupportedOperationException("待实现: ProfileView.onChangePasswordClick 负责人: 待分配");
     }
 
     /**
@@ -391,8 +181,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void onAddFriendClick() {
-        new AddFriendDialog(this).setVisible(true);
-        loadFriends();
+        throw new UnsupportedOperationException("待实现: ProfileView.onAddFriendClick 负责人: 待分配");
     }
 
     /**
@@ -402,6 +191,6 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void onMyMessageClick() {
-        new MyMessageView().setVisible(true);
+        throw new UnsupportedOperationException("待实现: ProfileView.onMyMessageClick 负责人: 待分配");
     }
 }
