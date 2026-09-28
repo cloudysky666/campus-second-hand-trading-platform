@@ -381,7 +381,7 @@ public class ProfileView extends JFrame {
      * 返回值: 无
      */
     public void onEditInfoClick() {
-        new EditProfileDialog(this).setVisible(true); // 模态对话框，关闭后继续
+        new EditProfileDialog(this).setVisible(true);
         loadUserInfo();
     }
 

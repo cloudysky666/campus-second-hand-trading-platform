@@ -143,7 +143,7 @@ public class MyMessageView extends JFrame {
         boolean success = service.delete(messageId);
         if (success) {
             JOptionPane.showMessageDialog(this, "删除成功");
-            loadMyMessages(); // 刷新表格
+            loadMyMessages();
         } else {
             JOptionPane.showMessageDialog(this, "删除失败，请稍后重试");
         }
