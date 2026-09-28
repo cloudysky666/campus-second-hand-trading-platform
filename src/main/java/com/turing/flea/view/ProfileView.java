@@ -203,6 +203,7 @@ public class ProfileView extends JFrame {
     public void loadUserInfo() {
         User user = Session.getCurrentUser();
         if (user == null) {
+            System.out.println("当前无用户登陆");
             return;
         }
         nicknameLabel.setText("昵称：" + user.getNickname());
@@ -222,13 +223,18 @@ public class ProfileView extends JFrame {
         GoodsService service = new GoodsService();
         List<Goods> list = service.myGoods(Session.currentUserId());
 
+        if (list == null){
+            System.out.println("loadMyGoods:返回商品列表为空");
+            return;
+        }
+
         goodsTableModel.setRowCount(0);
         for (int i = 0; i < list.size(); i++) {
             Goods g = list.get(i);
             goodsTableModel.addRow(new Object[]{
                     g.getId(),
                     g.getTitle(),
-                    g.getPrice(),
+                    g.getPrice()/100.0,
                     statusToText(g.getStatus())
             });
         }
@@ -257,6 +263,11 @@ public class ProfileView extends JFrame {
     public void loadFriends() {
         FriendService service = new FriendService();
         List<User> list = service.listFriends(Session.currentUserId());
+
+        if (list == null){
+            System.out.println("loadFriends:返回好友列表为空");
+            return;
+        }
 
         friendListModel.clear();
         for (int i = 0; i < list.size(); i++) {

@@ -103,6 +103,11 @@ public class MyMessageView extends JFrame {
         GoodsMessageService service = new GoodsMessageService();
         List<GoodsMessage> list = service.myMessages(Session.currentUserId());
 
+        if (list == null){
+            System.out.println("loadMyMessages:返回留言列表为空");
+            return;
+        }
+
         tableModel.setRowCount(0);
 
         for (int i = 0; i < list.size(); i++) {
